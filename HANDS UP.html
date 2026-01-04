@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HANDS UP - Gestion Humanitaire</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET ET VARIABLES */
+    :root {
+      --primary: #0a3d62;
+      --primary-light: #1289ca;
+      --secondary: #ff6b6b;
+      --accent: #4ecdc4;
+      --light: #f8f9fa;
+      --dark: #2d3436;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --success: #20bf6b;
+      --warning: #f7b731;
+      --shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+      --shadow-heavy: 0 20px 40px rgba(0, 51, 102, 0.15);
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      --border-radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    .logo-placeholder {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--primary);
+      box-shadow: var(--shadow);
+      border: 3px solid rgba(255,255,255,0.3);
+      animation: pulse 2s infinite, float 3s ease-in-out infinite;
+      cursor: pointer;
+      transition: var(--transition);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .logo-placeholder:hover {
+      animation: none;
+      transform: rotate(15deg) scale(1.1);
+      box-shadow: 0 0 30px rgba(255,255,255,0.6);
+    }
+
+    .logo-placeholder i {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .logo-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+    }
+
+    .logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .logo-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 2px;
+      font-weight: 300;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    .user-badge {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .main-container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 30px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    /* PAGE DE CONNEXION */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 75vh;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 50px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: var(--shadow-heavy);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+      transition: var(--transition);
+    }
+
+    .login-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 50px rgba(0, 51, 102, 0.2);
+    }
+
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+      background-size: 200% 100%;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    .login-title {
+      font-size: 32px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .login-subtitle {
+      color: var(--gray);
+      margin-bottom: 40px;
+      font-size: 16px;
+    }
+
+    /* FORMULAIRE */
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-label i {
+      color: var(--primary-light);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 18px 20px;
+      border: 2px solid var(--gray-light);
+      border-radius: 10px;
+      font-size: 16px;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(10, 61, 98, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* BOUTONS */
+    .btn {
+      padding: 18px 35px;
+      border-radius: 10px;
+      border: none;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(10, 61, 98, 0.3);
+      background-size: 150% 150%;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+      transform: rotate(30deg);
+      transition: 0.6s;
+    }
+
+    .btn-primary:hover::after {
+      left: 120%;
+    }
+
+    .btn-sm {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--secondary);
+      color: white;
+    }
+
+    /* APP CONTENT */
+    .app-content {
+      display: none;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    /* NAVIGATION APP */
+    .app-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .nav-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+    }
+
+    .nav-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-heavy);
+      border-color: var(--primary);
+    }
+
+    .nav-card i {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .nav-card:hover i {
+      color: var(--secondary);
+      transform: scale(1.2);
+    }
+
+    .nav-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .nav-card p {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    /* SECTIONS DE CONTENU */
+    .content-section {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      display: none;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .section-title {
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--gray-light);
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    /* TABLEAUX */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .data-table th {
+      background: var(--primary);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .data-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .data-table tr:hover {
+      background: rgba(10, 61, 98, 0.05);
+    }
+
+    /* FORMULAIRES AJOUT */
+    .add-form {
+      background: var(--light);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      margin-top: 30px;
+      display: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* STATISTIQUES */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--primary);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .stat-label {
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 40px;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .footer-tagline {
+      font-size: 18px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    .footer-copyright {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    /* UTILITIES */
+    .hidden {
+      display: none !important;
+    }
+
+    .visible {
+      display: block !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-4 { margin-top: 40px; }
+    .mb-4 { margin-bottom: 40px; }
+    .p-4 { padding: 40px; }
+
+    /* BADGES */
+    .badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-admin {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .badge-treasurer {
+      background: #4ecdc4;
+      color: white;
+    }
+
+    .badge-logistics {
+      background: #f7b731;
+      color: white;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+      .app-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .main-container {
+        padding: 0 20px;
+        margin: 20px auto;
+      }
+      
+      .login-card {
+        padding: 30px;
+      }
+      
+      .app-nav {
+        grid-template-columns: 1fr;
+      }
+      
+      .content-section {
+        padding: 25px;
+      }
+      
+      .section-title {
+        font-size: 24px;
+      }
+      
+      .data-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+
+    /* EFFET DE CHARGEMENT */
+    .loader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    /* NOTIFICATIONS */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 30px;
+      background: white;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 999;
+      display: none;
+      animation: slideInRight 0.5s ease-out;
+      border-left: 5px solid var(--success);
+      max-width: 400px;
+    }
+
+    .notification.error {
+      border-left-color: var(--secondary);
+    }
+
+    .notification.warning {
+      border-left-color: var(--warning);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- LOADER -->
+  <div id="loader" class="loader">
+    <div class="spinner"></div>
+    <h2>Chargement de HANDS UP</h2>
+    <p>Veuillez patienter...</p>
+  </div>
+
+  <!-- NOTIFICATION -->
+  <div id="notification" class="notification">
+    <div id="notification-message"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-placeholder" id="logoContainer">
+        <i class="fas fa-hands-helping" id="logoIcon"></i>
+      </div>
+      <div>
+        <div class="logo-text">HANDS UP</div>
+        <div class="logo-subtitle">Gestion Humanitaire</div>
+      </div>
+    </div>
+    
+    <div class="user-info" id="userInfo" style="display: none;">
+      <div class="user-badge">
+        <i class="fas fa-user"></i>
+        <span id="userRole">Administrateur</span>
+      </div>
+      <button class="btn btn-sm btn-danger" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <div class="main-container">
+    
+    <!-- PAGE DE CONNEXION -->
+    <div id="loginPage" class="login-container">
+      <div class="login-card">
+        <div class="login-title">HANDS UP</div>
+        <div class="login-subtitle">Plateforme de gestion humanitaire</div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="username">
+              <i class="fas fa-user"></i>
+              <span>Nom d'utilisateur</span>
+            </label>
+            <input type="text" id="username" class="form-input" placeholder="Illishx08 / Traoré / Babacar" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="password">
+              <i class="fas fa-lock"></i>
+              <span>Mot de passe</span>
+            </label>
+            <input type="password" id="password" class="form-input" placeholder="2004 / 2005" required>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Se connecter</span>
+          </button>
+        </form>
+        
+        <div class="mt-4 text-center" style="color: var(--gray); font-size: 14px;">
+          <i class="fas fa-info-circle"></i>
+          Comptes disponibles :<br>
+          <strong>Administrateur:</strong> Illishx08 / 2004<br>
+          <strong>Trésorier:</strong> Traoré / 2004<br>
+          <strong>Logistique:</strong> Babacar / 2005
+        </div>
+      </div>
+    </div>
+    
+    <!-- CONTENU DE L'APPLICATION -->
+    <div id="appContent" class="app-content">
+      
+      <!-- NAVIGATION -->
+      <div class="app-nav">
+        <div class="nav-card" onclick="showSection('dashboard')">
+          <i class="fas fa-tachometer-alt"></i>
+          <h3>Tableau de bord</h3>
+          <p>Vue d'ensemble et statistiques</p>
+        </div>
+        
+        <div class="nav-card" onclick="showSection('donations')">
+          <i class="fas fa-donate"></i>
+          <h3>Gestion des dons</h3>
+          <p>Ajouter et gérer les dons</p>
+        </div>
+        
+        <div class="nav-card" onclick="showSection('expenses')">
+          <i class="fas fa-receipt"></i>
+          <h3>Gestion des dépenses</h3>
+          <p>Suivi des dépenses</p>
+        </div>
+        
+        <div class="nav-card" onclick="showSection('kits')">
+          <i class="fas fa-box-open"></i>
+          <h3>Kits humanitaires</h3>
+          <p>Gestion des distributions</p>
+        </div>
+        
+        <div class="nav-card" onclick="showSection('reports')">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Rapports</h3>
+          <p>Analyses et exports</p>
+        </div>
+        
+        <div class="nav-card" onclick="showSection('users')" id="adminSection" style="display: none;">
+          <i class="fas fa-users-cog"></i>
+          <h3>Administration</h3>
+          <p>Gestion des utilisateurs</p>
+        </div>
+      </div>
+      
+      <!-- TABLEAU DE BORD -->
+      <div id="dashboard" class="content-section visible">
+        <h2 class="section-title">Tableau de bord</h2>
+        <p>Bienvenue <span id="welcomeUser"></span> !</p>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Dons totaux</div>
+            <div class="stat-value" id="totalDonations">0 FCFA</div>
+            <div class="stat-label">Ce mois-ci</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Dépenses totales</div>
+            <div class="stat-value" id="totalExpenses">0 FCFA</div>
+            <div class="stat-label">Ce mois-ci</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Solde disponible</div>
+            <div class="stat-value" id="currentBalance">0 FCFA</div>
+            <div class="stat-label">Sur le compte</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Kits distribués</div>
+            <div class="stat-value" id="distributedKits">0</div>
+            <div class="stat-label">Sur <span id="totalKits">0</span> préparés</div>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h3>Activité récente</h3>
+          <div id="recentActivity" class="mt-4">
+            <p>Aucune activité récente</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- GESTION DES DONS -->
+      <div id="donations" class="content-section">
+        <h2 class="section-title">Gestion des dons</h2>
+        
+        <button class="btn btn-primary" onclick="toggleAddForm('donation')">
+          <i class="fas fa-plus-circle"></i>
+          Ajouter un don
+        </button>
+        
+        <div id="addDonationForm" class="add-form">
+          <h3>Nouveau don</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Donateur</label>
+              <input type="text" id="donorName" class="form-input" placeholder="Nom du donateur">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Montant (FCFA)</label>
+              <input type="number" id="donationAmount" class="form-input" placeholder="Montant">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Type de don</label>
+              <select id="donationType" class="form-input">
+                <option value="money">Argent</option>
+                <option value="mobile">Mobile Money</option>
+                <option value="materials">Matériels</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" id="donationDate" class="form-input" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea id="donationNotes" class="form-input" rows="3" placeholder="Informations supplémentaires"></textarea>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-success" onclick="addDonation()">
+              <i class="fas fa-save"></i>
+              Enregistrer
+            </button>
+            <button class="btn btn-danger" onclick="toggleAddForm('donation')">
+              <i class="fas fa-times"></i>
+              Annuler
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h3>Liste des dons</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Donateur</th>
+                <th>Type</th>
+                <th>Montant (FCFA)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="donationsList">
+              <!-- Les dons seront ajoutés ici dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- GESTION DES DÉPENSES -->
+      <div id="expenses" class="content-section">
+        <h2 class="section-title">Gestion des dépenses</h2>
+        
+        <button class="btn btn-primary" onclick="toggleAddForm('expense')">
+          <i class="fas fa-plus-circle"></i>
+          Ajouter une dépense
+        </button>
+        
+        <div id="addExpenseForm" class="add-form">
+          <h3>Nouvelle dépense</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <input type="text" id="expenseDescription" class="form-input" placeholder="Ex: Achat de riz">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Montant (FCFA)</label>
+              <input type="number" id="expenseAmount" class="form-input" placeholder="Montant">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Catégorie</label>
+              <select id="expenseCategory" class="form-input">
+                <option value="food">Nourriture</option>
+                <option value="transport">Transport</option>
+                <option value="materials">Matériels</option>
+                <option value="logistics">Logistique</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" id="expenseDate" class="form-input" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Justificatif</label>
+            <textarea id="expenseJustification" class="form-input" rows="3" placeholder="Détails de la dépense"></textarea>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-success" onclick="addExpense()">
+              <i class="fas fa-save"></i>
+              Enregistrer
+            </button>
+            <button class="btn btn-danger" onclick="toggleAddForm('expense')">
+              <i class="fas fa-times"></i>
+              Annuler
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h3>Liste des dépenses</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Montant (FCFA)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expensesList">
+              <!-- Les dépenses seront ajoutées ici dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- KITS HUMANITAIRES -->
+      <div id="kits" class="content-section">
+        <h2 class="section-title">Kits humanitaires</h2>
+        
+        <button class="btn btn-primary" onclick="toggleAddForm('kit')">
+          <i class="fas fa-plus-circle"></i>
+          Ajouter un kit
+        </button>
+        
+        <div id="addKitForm" class="add-form">
+          <h3>Nouveau kit</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Type de kit</label>
+              <select id="kitType" class="form-input">
+                <option value="ndogu">Kit Ndogu</option>
+                <option value="food">Kit Alimentaire</option>
+                <option value="hygiene">Kit Hygiène</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Quantité</label>
+              <input type="number" id="kitQuantity" class="form-input" placeholder="Nombre de kits">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Lieu de distribution</label>
+              <input type="text" id="kitLocation" class="form-input" placeholder="Ex: Grand Mbao">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" id="kitDate" class="form-input" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contenu du kit</label>
+            <textarea id="kitContent" class="form-input" rows="3" placeholder="Détail du contenu des kits"></textarea>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-success" onclick="addKit()">
+              <i class="fas fa-save"></i>
+              Enregistrer
+            </button>
+            <button class="btn btn-danger" onclick="toggleAddForm('kit')">
+              <i class="fas fa-times"></i>
+              Annuler
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h3>Inventaire des kits</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Quantité</th>
+                <th>Lieu</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="kitsList">
+              <!-- Les kits seront ajoutés ici dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- RAPPORTS -->
+      <div id="reports" class="content-section">
+        <h2 class="section-title">Rapports et analyses</h2>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total des dons</div>
+            <div class="stat-value" id="reportTotalDonations">0 FCFA</div>
+            <button class="btn btn-sm btn-primary mt-2" onclick="generateDonationReport()">
+              <i class="fas fa-download"></i>
+              Export PDF
+            </button>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Total des dépenses</div>
+            <div class="stat-value" id="reportTotalExpenses">0 FCFA</div>
+            <button class="btn btn-sm btn-primary mt-2" onclick="generateExpenseReport()">
+              <i class="fas fa-download"></i>
+              Export PDF
+            </button>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Bilan financier</div>
+            <div class="stat-value" id="reportBalance">0 FCFA</div>
+            <button class="btn btn-sm btn-success mt-2" onclick="generateFinancialReport()">
+              <i class="fas fa-file-excel"></i>
+              Export Excel
+            </button>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-label">Kits distribués</div>
+            <div class="stat-value" id="reportKits">0</div>
+            <button class="btn btn-sm btn-primary mt-2" onclick="generateKitReport()">
+              <i class="fas fa-download"></i>
+              Export PDF
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h3>Exports disponibles</h3>
+          <div class="form-row">
+            <button class="btn btn-primary" onclick="exportAllData()">
+              <i class="fas fa-file-export"></i>
+              Exporter toutes les données
+            </button>
+            
+            <button class="btn btn-success" onclick="exportMonthlyReport()">
+              <i class="fas fa-chart-line"></i>
+              Rapport mensuel
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ADMINISTRATION (Seulement pour admin) -->
+      <div id="users" class="content-section">
+        <h2 class="section-title">Administration des utilisateurs</h2>
+        
+        <div class="mt-4">
+          <h3>Utilisateurs enregistrés</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nom d'utilisateur</th>
+                <th>Rôle</th>
+                <th>Dernière connexion</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Illishx08</td>
+                <td><span class="badge badge-admin">Administrateur</span></td>
+                <td><?php echo date('d/m/Y H:i'); ?></td>
+                <td><span style="color: var(--success);">●</span> Actif</td>
+              </tr>
+              <tr>
+                <td>Traoré</td>
+                <td><span class="badge badge-treasurer">Trésorier</span></td>
+                <td>-</td>
+                <td><span style="color: var(--gray);">●</span> Inactif</td>
+              </tr>
+              <tr>
+                <td>Babacar</td>
+                <td><span class="badge badge-logistics">Chargé de logistique</span></td>
+                <td>-</td>
+                <td><span style="color: var(--gray);">●</span> Inactif</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">HANDS UP</div>
+      <div class="footer-tagline">Partagez le repas, partagez l'amour</div>
+      <div class="footer-copyright">
+        &copy; 2025 HANDS UP - Plateforme de gestion humanitaire
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Données de l'application
+    let currentUser = null;
+    let userRole = '';
+    
+    // Base de données locale
+    let donations = [];
+    let expenses = [];
+    let kits = [];
+    
+    // Simuler un chargement initial
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        loadSampleData();
+      }, 1000);
+    });
+
+    // Charger des données d'exemple
+    function loadSampleData() {
+      // Donations d'exemple
+      donations = [
+        { id: 1, donor: 'Anonyme', amount: 50000, type: 'money', date: '2023-11-15', notes: 'Don spontané' },
+        { id: 2, donor: 'Orange Money', amount: 25000, type: 'mobile', date: '2023-11-20', notes: 'Transfert mobile' }
+      ];
+      
+      // Dépenses d'exemple
+      expenses = [
+        { id: 1, description: 'Achat de riz', amount: 100000, category: 'food', date: '2023-11-18', justification: '20 sacs de riz' },
+        { id: 2, description: 'Transport', amount: 50000, category: 'transport', date: '2023-11-22', justification: 'Location camion' }
+      ];
+      
+      // Kits d'exemple
+      kits = [
+        { id: 1, type: 'ndogu', quantity: 150, location: 'Grand Mbao', date: '2023-11-25', content: 'Riz, sucre, huile', status: 'prepared' },
+        { id: 2, type: 'ndogu', quantity: 120, location: 'Grand Mbao', date: '2023-11-26', content: 'Riz, sucre, huile', status: 'distributed' }
+      ];
+      
+      updateDashboard();
+    }
+
+    // Authentification
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Vérifier les identifiants
+      let isValid = false;
+      
+      if (username === 'Illishx08' && password === '2004') {
+        currentUser = 'Illishx08';
+        userRole = 'admin';
+        isValid = true;
+      } else if (username === 'Traoré' && password === '2004') {
+        currentUser = 'Traoré';
+        userRole = 'treasurer';
+        isValid = true;
+      } else if (username === 'Babacar' && password === '2005') {
+        currentUser = 'Babacar';
+        userRole = 'logistics';
+        isValid = true;
+      }
+      
+      if (isValid) {
+        showLoading();
+        
+        setTimeout(() => {
+          hideLoading();
+          document.getElementById('loginPage').style.display = 'none';
+          document.getElementById('appContent').style.display = 'block';
+          document.getElementById('userInfo').style.display = 'flex';
+          
+          // Mettre à jour l'interface selon le rôle
+          updateUIForRole();
+          
+          showNotification('Connexion réussie ! Bienvenue ' + currentUser);
+          
+          // Animation d'entrée
+          document.querySelectorAll('.nav-card').forEach((card, index) => {
+            card.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
+            card.style.opacity = '0';
+          });
+        }, 1500);
+      } else {
+        showNotification('Identifiant ou mot de passe incorrect', 'error');
+      }
+    });
+
+    // Mettre à jour l'interface selon le rôle
+    function updateUIForRole() {
+      const welcomeUser = document.getElementById('welcomeUser');
+      const userRoleElement = document.getElementById('userRole');
+      const adminSection = document.getElementById('adminSection');
+      
+      let roleText = '';
+      let badgeClass = '';
+      
+      switch(userRole) {
+        case 'admin':
+          roleText = 'Administrateur';
+          badgeClass = 'badge-admin';
+          adminSection.style.display = 'block';
+          break;
+        case 'treasurer':
+          roleText = 'Trésorier';
+          badgeClass = 'badge-treasurer';
+          adminSection.style.display = 'none';
+          break;
+        case 'logistics':
+          roleText = 'Chargé de logistique';
+          badgeClass = 'badge-logistics';
+          adminSection.style.display = 'none';
+          break;
+      }
+      
+      welcomeUser.textContent = currentUser + ' (' + roleText + ')';
+      userRoleElement.textContent = roleText;
+      userRoleElement.className = badgeClass;
+    }
+
+    // Afficher une section spécifique
+    function showSection(sectionId) {
+      // Masquer toutes les sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('visible');
+        section.style.display = 'none';
+      });
+      
+      // Afficher la section demandée
+      const section = document.getElementById(sectionId);
+      section.style.display = 'block';
+      setTimeout(() => {
+        section.classList.add('visible');
+      }, 10);
+      
+      // Mettre à jour les données si nécessaire
+      if (sectionId === 'dashboard') {
+        updateDashboard();
+      } else if (sectionId === 'donations') {
+        updateDonationsList();
+      } else if (sectionId === 'expenses') {
+        updateExpensesList();
+      } else if (sectionId === 'kits') {
+        updateKitsList();
+      } else if (sectionId === 'reports') {
+        updateReports();
+      }
+    }
+
+    // Déconnexion
+    function logout() {
+      if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        showLoading();
+        
+        setTimeout(() => {
+          document.getElementById('appContent').style.display = 'none';
+          document.getElementById('loginPage').style.display = 'flex';
+          document.getElementById('userInfo').style.display = 'none';
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+          currentUser = null;
+          userRole = '';
+          hideLoading();
+          showNotification('Vous avez été déconnecté avec succès.');
+        }, 1000);
+      }
+    }
+
+    // Mettre à jour le tableau de bord
+    function updateDashboard() {
+      // Calculer les totaux
+      const totalDonations = donations.reduce((sum, donation) => sum + donation.amount, 0);
+      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const totalKits = kits.reduce((sum, kit) => kit.status === 'distributed' ? sum + kit.quantity : sum, 0);
+      const preparedKits = kits.reduce((sum, kit) => kit.status === 'prepared' ? sum + kit.quantity : sum, 0);
+      
+      // Mettre à jour les affichages
+      document.getElementById('totalDonations').textContent = formatCurrency(totalDonations);
+      document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
+      document.getElementById('currentBalance').textContent = formatCurrency(totalDonations - totalExpenses);
+      document.getElementById('distributedKits').textContent = totalKits;
+      document.getElementById('totalKits').textContent = totalKits + preparedKits;
+      
+      // Mettre à jour l'activité récente
+      updateRecentActivity();
+    }
+
+    // Formater une valeur monétaire
+    function formatCurrency(amount) {
+      return amount.toLocaleString('fr-FR') + ' FCFA';
+    }
+
+    // Mettre à jour l'activité récente
+    function updateRecentActivity() {
+      const container = document.getElementById('recentActivity');
+      let html = '';
+      
+      // Combiner et trier toutes les activités
+      let activities = [];
+      
+      donations.forEach(donation => {
+        activities.push({
+          type: 'donation',
+          date: donation.date,
+          text: `Don de ${formatCurrency(donation.amount)} par ${donation.donor}`,
+          icon: 'fa-donate'
+        });
+      });
+      
+      expenses.forEach(expense => {
+        activities.push({
+          type: 'expense',
+          date: expense.date,
+          text: `Dépense: ${expense.description} - ${formatCurrency(expense.amount)}`,
+          icon: 'fa-receipt'
+        });
+      });
+      
+      kits.forEach(kit => {
+        activities.push({
+          type: 'kit',
+          date: kit.date,
+          text: `${kit.quantity} kits ${kit.type} ${kit.status === 'distributed' ? 'distribués' : 'préparés'} à ${kit.location}`,
+          icon: 'fa-box-open'
+        });
+      });
+      
+      // Trier par date (plus récent d'abord)
+      activities.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      // Afficher les 5 dernières activités
+      activities.slice(0, 5).forEach(activity => {
+        html += `
+          <div style="padding: 10px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px;">
+            <i class="fas ${activity.icon}" style="color: var(--primary);"></i>
+            <div>
+              <div>${activity.text}</div>
+              <small style="color: var(--gray);">${formatDate(activity.date)}</small>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html || '<p>Aucune activité récente</p>';
+    }
+
+    // Formater une date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('fr-FR');
+    }
+
+    // Basculer l'affichage des formulaires d'ajout
+    function toggleAddForm(type) {
+      const form = document.getElementById('add' + type.charAt(0).toUpperCase() + type.slice(1) + 'Form');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // AJOUTER UN DON
+    function addDonation() {
+      const donor = document.getElementById('donorName').value;
+      const amount = parseInt(document.getElementById('donationAmount').value);
+      const type = document.getElementById('donationType').value;
+      const date = document.getElementById('donationDate').value;
+      const notes = document.getElementById('donationNotes').value;
+      
+      if (!donor || !amount) {
+        showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+        return;
+      }
+      
+      const newDonation = {
+        id: donations.length + 1,
+        donor: donor,
+        amount: amount,
+        type: type,
+        date: date,
+        notes: notes
+      };
+      
+      donations.push(newDonation);
+      updateDonationsList();
+      updateDashboard();
+      toggleAddForm('donation');
+      
+      // Réinitialiser le formulaire
+      document.getElementById('donorName').value = '';
+      document.getElementById('donationAmount').value = '';
+      document.getElementById('donationNotes').value = '';
+      
+      showNotification('Don ajouté avec succès !');
+    }
+
+    // Mettre à jour la liste des dons
+    function updateDonationsList() {
+      const container = document.getElementById('donationsList');
+      let html = '';
+      
+      donations.forEach(donation => {
+        html += `
+          <tr>
+            <td>${formatDate(donation.date)}</td>
+            <td>${donation.donor}</td>
+            <td>${getDonationTypeLabel(donation.type)}</td>
+            <td>${formatCurrency(donation.amount)}</td>
+            <td>
+              <button class="btn btn-sm" onclick="editDonation(${donation.id})">
+                <i class="fas fa-edit"></i>
+              </button>
+              ${userRole === 'admin' || userRole === 'treasurer' ? `
+              <button class="btn btn-sm btn-danger" onclick="deleteDonation(${donation.id})">
+                <i class="fas fa-trash"></i>
+              </button>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      
+      container.innerHTML = html || '<tr><td colspan="5" class="text-center">Aucun don enregistré</td></tr>';
+    }
+
+    function getDonationTypeLabel(type) {
+      const types = {
+        'money': 'Argent',
+        'mobile': 'Mobile Money',
+        'materials': 'Matériels',
+        'other': 'Autre'
+      };
+      return types[type] || type;
+    }
+
+    // AJOUTER UNE DÉPENSE
+    function addExpense() {
+      const description = document.getElementById('expenseDescription').value;
+      const amount = parseInt(document.getElementById('expenseAmount').value);
+      const category = document.getElementById('expenseCategory').value;
+      const date = document.getElementById('expenseDate').value;
+      const justification = document.getElementById('expenseJustification').value;
+      
+      if (!description || !amount) {
+        showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+        return;
+      }
+      
+      const newExpense = {
+        id: expenses.length + 1,
+        description: description,
+        amount: amount,
+        category: category,
+        date: date,
+        justification: justification
+      };
+      
+      expenses.push(newExpense);
+      updateExpensesList();
+      updateDashboard();
+      toggleAddForm('expense');
+      
+      // Réinitialiser le formulaire
+      document.getElementById('expenseDescription').value = '';
+      document.getElementById('expenseAmount').value = '';
+      document.getElementById('expenseJustification').value = '';
+      
+      showNotification('Dépense ajoutée avec succès !');
+    }
+
+    // Mettre à jour la liste des dépenses
+    function updateExpensesList() {
+      const container = document.getElementById('expensesList');
+      let html = '';
+      
+      expenses.forEach(expense => {
+        html += `
+          <tr>
+            <td>${formatDate(expense.date)}</td>
+            <td>${expense.description}</td>
+            <td>${getExpenseCategoryLabel(expense.category)}</td>
+            <td>${formatCurrency(expense.amount)}</td>
+            <td>
+              <button class="btn btn-sm" onclick="editExpense(${expense.id})">
+                <i class="fas fa-edit"></i>
+              </button>
+              ${userRole === 'admin' || userRole === 'treasurer' ? `
+              <button class="btn btn-sm btn-danger" onclick="deleteExpense(${expense.id})">
+                <i class="fas fa-trash"></i>
+              </button>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      
+      container.innerHTML = html || '<tr><td colspan="5" class="text-center">Aucune dépense enregistrée</td></tr>';
+    }
+
+    function getExpenseCategoryLabel(category) {
+      const categories = {
+        'food': 'Nourriture',
+        'transport': 'Transport',
+        'materials': 'Matériels',
+        'logistics': 'Logistique',
+        'other': 'Autre'
+      };
+      return categories[category] || category;
+    }
+
+    // AJOUTER UN KIT
+    function addKit() {
+      const type = document.getElementById('kitType').value;
+      const quantity = parseInt(document.getElementById('kitQuantity').value);
+      const location = document.getElementById('kitLocation').value;
+      const date = document.getElementById('kitDate').value;
+      const content = document.getElementById('kitContent').value;
+      
+      if (!type || !quantity || !location) {
+        showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+        return;
+      }
+      
+      const newKit = {
+        id: kits.length + 1,
+        type: type,
+        quantity: quantity,
+        location: location,
+        date: date,
+        content: content,
+        status: 'prepared'
+      };
+      
+      kits.push(newKit);
+      updateKitsList();
+      updateDashboard();
+      toggleAddForm('kit');
+      
+      // Réinitialiser le formulaire
+      document.getElementById('kitQuantity').value = '';
+      document.getElementById('kitLocation').value = '';
+      document.getElementById('kitContent').value = '';
+      
+      showNotification('Kit ajouté avec succès !');
+    }
+
+    // Mettre à jour la liste des kits
+    function updateKitsList() {
+      const container = document.getElementById('kitsList');
+      let html = '';
+      
+      kits.forEach(kit => {
+        html += `
+          <tr>
+            <td>${getKitTypeLabel(kit.type)}</td>
+            <td>${kit.quantity}</td>
+            <td>${kit.location}</td>
+            <td>${formatDate(kit.date)}</td>
+            <td>
+              <span style="color: ${kit.status === 'distributed' ? 'var(--success)' : 'var(--warning)'}">
+                ${kit.status === 'distributed' ? 'Distribué' : 'Préparé'}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm" onclick="editKit(${kit.id})">
+                <i class="fas fa-edit"></i>
+              </button>
+              ${kit.status === 'prepared' ? `
+              <button class="btn btn-sm btn-success" onclick="distributeKit(${kit.id})">
+                <i class="fas fa-check"></i>
+              </button>
+              ` : ''}
+              ${userRole === 'admin' || userRole === 'logistics' ? `
+              <button class="btn btn-sm btn-danger" onclick="deleteKit(${kit.id})">
+                <i class="fas fa-trash"></i>
+              </button>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      
+      container.innerHTML = html || '<tr><td colspan="6" class="text-center">Aucun kit enregistré</td></tr>';
+    }
+
+    function getKitTypeLabel(type) {
+      const types = {
+        'ndogu': 'Kit Ndogu',
+        'food': 'Kit Alimentaire',
+        'hygiene': 'Kit Hygiène',
+        'other': 'Autre'
+      };
+      return types[type] || type;
+    }
+
+    // Distribuer un kit
+    function distributeKit(kitId) {
+      const kit = kits.find(k => k.id === kitId);
+      if (kit) {
+        kit.status = 'distributed';
+        updateKitsList();
+        updateDashboard();
+        showNotification('Kit marqué comme distribué !');
+      }
+    }
+
+    // Mettre à jour les rapports
+    function updateReports() {
+      const totalDonations = donations.reduce((sum, donation) => sum + donation.amount, 0);
+      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const totalKits = kits.reduce((sum, kit) => kit.status === 'distributed' ? sum + kit.quantity : sum, 0);
+      
+      document.getElementById('reportTotalDonations').textContent = formatCurrency(totalDonations);
+      document.getElementById('reportTotalExpenses').textContent = formatCurrency(totalExpenses);
+      document.getElementById('reportBalance').textContent = formatCurrency(totalDonations - totalExpenses);
+      document.getElementById('reportKits').textContent = totalKits;
+    }
+
+    // Fonctions de rapport (simulées)
+    function generateDonationReport() {
+      showNotification('Export PDF des dons généré avec succès !');
+    }
+
+    function generateExpenseReport() {
+      showNotification('Export PDF des dépenses généré avec succès !');
+    }
+
+    function generateFinancialReport() {
+      showNotification('Export Excel du bilan financier généré avec succès !');
+    }
+
+    function generateKitReport() {
+      showNotification('Export PDF des kits généré avec succès !');
+    }
+
+    function exportAllData() {
+      showNotification('Toutes les données ont été exportées avec succès !');
+    }
+
+    function exportMonthlyReport() {
+      showNotification('Rapport mensuel généré avec succès !');
+    }
+
+    // Fonctions d'édition/suppression (à implémenter)
+    function editDonation(id) {
+      showNotification('Fonction d\'édition à implémenter', 'warning');
+    }
+
+    function deleteDonation(id) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer ce don ?')) {
+        donations = donations.filter(d => d.id !== id);
+        updateDonationsList();
+        updateDashboard();
+        showNotification('Don supprimé avec succès');
+      }
+    }
+
+    function editExpense(id) {
+      showNotification('Fonction d\'édition à implémenter', 'warning');
+    }
+
+    function deleteExpense(id) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')) {
+        expenses = expenses.filter(e => e.id !== id);
+        updateExpensesList();
+        updateDashboard();
+        showNotification('Dépense supprimée avec succès');
+      }
+    }
+
+    function editKit(id) {
+      showNotification('Fonction d\'édition à implémenter', 'warning');
+    }
+
+    function deleteKit(id) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer ce kit ?')) {
+        kits = kits.filter(k => k.id !== id);
+        updateKitsList();
+        updateDashboard();
+        showNotification('Kit supprimé avec succès');
+      }
+    }
+
+    // Fonctions d'utilité
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      const messageEl = document.getElementById('notification-message');
+      
+      messageEl.textContent = message;
+      notification.className = 'notification ' + (type || 'success');
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 4000);
+    }
+
+    function showLoading() {
+      document.getElementById('loader').style.display = 'flex';
+    }
+
+    function hideLoading() {
+      document.getElementById('loader').style.display = 'none';
+    }
+
+    // Permissions par rôle
+    function checkPermission(action) {
+      switch(userRole) {
+        case 'admin':
+          return true; // Admin peut tout faire
+        case 'treasurer':
+          return ['addDonation', 'addExpense', 'viewFinancials'].includes(action);
+        case 'logistics':
+          return ['addKit', 'distributeKit', 'viewKits'].includes(action);
+        default:
+          return false;
+      }
+    }
+  </script>
+</body>
+</html>
